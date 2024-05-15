@@ -1,8 +1,9 @@
 {
-  "name": "farcaster-chatgpt-bot",
-  "version": "1.0.0",
-  "main": "api/handler.js",
-  "dependencies": {
-    "axios": "^0.21.1"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "api/handler.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/api/handler.js" }
+  ]
 }
