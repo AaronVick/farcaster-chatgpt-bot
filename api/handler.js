@@ -1,12 +1,14 @@
-const express = require('express');
 const axios = require('axios');
+const express = require('express');
 const app = express();
 
 const farcasterApiUrl = 'https://api.warpcast.com/v2';
 const apiKey = process.env.FARCASTER_API_KEY;
 const openAiApiKey = process.env.OPENAI_API_KEY;
 
-app.get('/', async (req, res) => {
+app.use(express.json());
+
+app.post('/', async (req, res) => {
   try {
     const mentions = await getMentions();
     const responses = await Promise.all(mentions.map(async (mention) => {
