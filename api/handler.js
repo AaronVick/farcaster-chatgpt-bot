@@ -1,10 +1,12 @@
+const express = require('express');
 const axios = require('axios');
+const app = express();
 
-const farcasterApiUrl = 'https://api.farcaster.xyz';
+const farcasterApiUrl = 'https://api.warpcast.com/v2';
 const apiKey = process.env.FARCASTER_API_KEY;
 const openAiApiKey = process.env.OPENAI_API_KEY;
 
-module.exports = async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const mentions = await getMentions();
     const responses = await Promise.all(mentions.map(async (mention) => {
@@ -19,7 +21,7 @@ module.exports = async (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
-};
+});
 
 const getMentions = async () => {
   try {
@@ -64,3 +66,5 @@ const sendReply = async (mentionId, reply) => {
     console.error('Error sending reply:', error);
   }
 };
+
+module.exports = app;
