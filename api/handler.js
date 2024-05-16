@@ -14,26 +14,34 @@ app.get('/', (req, res) => {
 
 app.post('/', async (req, res) => {
   try {
+    console.log('Received a POST request');
     const mentions = await getMentions();
+    console.log('Mentions fetched:', mentions);
+
     const responses = await Promise.all(mentions.map(async (mention) => {
+      console.log('Processing mention:', mention);
       const question = mention.text.replace('?heyaaron', '').trim();
+      console.log('Question extracted:', question);
       const reply = await getChatGptResponse(question);
+      console.log('Generated reply:', reply);
       await sendReply(mention.id, reply);
       return reply;
     }));
 
     res.status(200).json({ success: true, responses });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error in POST handler:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 const getMentions = async () => {
   try {
+    console.log('Fetching mentions');
     const response = await axios.get(`${farcasterApiUrl}/mentions`, {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
+    console.log('Mentions response:', response.data);
     return response.data.mentions.filter(mention => mention.text.includes('?heyaaron'));
   } catch (error) {
     console.error('Error fetching mentions:', error);
@@ -43,6 +51,7 @@ const getMentions = async () => {
 
 const getChatGptResponse = async (question) => {
   try {
+    console.log('Generating ChatGPT response for question:', question);
     const response = await axios.post('https://api.openai.com/v1/engines/davinci/completions', {
       prompt: question,
       max_tokens: 150,
@@ -53,6 +62,7 @@ const getChatGptResponse = async (question) => {
     }, {
       headers: { 'Authorization': `Bearer ${openAiApiKey}` }
     });
+    console.log('ChatGPT response:', response.data);
     return response.data.choices[0].text.trim();
   } catch (error) {
     console.error('Error getting response from ChatGPT:', error);
@@ -62,12 +72,14 @@ const getChatGptResponse = async (question) => {
 
 const sendReply = async (mentionId, reply) => {
   try {
+    console.log('Sending reply:', reply);
     await axios.post(`${farcasterApiUrl}/casts`, {
       parent_id: mentionId,
       text: reply
     }, {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
+    console.log('Reply sent successfully');
   } catch (error) {
     console.error('Error sending reply:', error);
   }
