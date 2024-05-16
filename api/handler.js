@@ -55,7 +55,7 @@ const getMentions = async () => {
 const getChatGptResponse = async (question) => {
   try {
     console.log('Generating ChatGPT response for question:', question);
-    const response = await axios.post('https://api.openai.com/v1/engines/davinci/completions', {
+    const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
       prompt: question,
       max_tokens: 150,
       temperature: 0.7,
