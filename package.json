@@ -1,0 +1,8 @@
+{
+  "name": "farcaster-chatgpt-bot",
+  "version": "1.0.0",
+  "main": "api/handler.js",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
