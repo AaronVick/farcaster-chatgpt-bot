@@ -24,7 +24,8 @@ app.post('/', async (req, res) => {
       console.log('Question extracted:', question);
       const reply = await getChatGptResponse(question);
       console.log('Generated reply:', reply);
-      await sendReply(mention.id, reply, mention.author_id); // Include mention.author_id
+      await sendReply(mention.id, reply, mention.author_id);
+      console.log('Reply sent for mention:', mention.id);
       return reply;
     }));
 
