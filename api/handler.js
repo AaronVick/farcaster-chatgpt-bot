@@ -43,12 +43,15 @@ const getMentions = async () => {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
     console.log('Mentions response:', response.data);
-    return response.data.mentions.filter(mention => mention.text.includes('?heyaaron'));
+    const filteredMentions = response.data.mentions.filter(mention => mention.text.includes('?heyaaron'));
+    console.log('Filtered mentions:', filteredMentions);
+    return filteredMentions;
   } catch (error) {
     console.error('Error fetching mentions:', error);
     return [];
   }
 };
+
 
 const getChatGptResponse = async (question) => {
   try {
