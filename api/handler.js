@@ -2,11 +2,15 @@ const axios = require('axios');
 const express = require('express');
 const app = express();
 
-const farcasterApiUrl = 'https://api.warpcast.com/v2';
+const farcasterApiUrl = 'https://api.farcaster.xyz';
 const apiKey = process.env.FARCASTER_API_KEY;
 const openAiApiKey = process.env.OPENAI_API_KEY;
 
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Bot is running.');
+});
 
 app.post('/', async (req, res) => {
   try {
