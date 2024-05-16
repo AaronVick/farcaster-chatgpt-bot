@@ -52,7 +52,6 @@ const getMentions = async () => {
   }
 };
 
-
 const getChatGptResponse = async (question) => {
   try {
     console.log('Generating ChatGPT response for question:', question);
