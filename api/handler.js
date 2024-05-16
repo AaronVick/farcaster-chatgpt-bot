@@ -24,7 +24,7 @@ app.post('/', async (req, res) => {
       console.log('Question extracted:', question);
       const reply = await getChatGptResponse(question);
       console.log('Generated reply:', reply);
-      await sendReply(mention.id, reply);
+      await sendReply(mention.id, reply, mention.author_id); // Include mention.author_id
       return reply;
     }));
 
@@ -70,12 +70,13 @@ const getChatGptResponse = async (question) => {
   }
 };
 
-const sendReply = async (mentionId, reply) => {
+const sendReply = async (mentionId, reply, authorId) => {
   try {
     console.log('Sending reply:', reply);
     await axios.post(`${farcasterApiUrl}/casts`, {
       parent_id: mentionId,
-      text: reply
+      text: reply,
+      author_id: authorId
     }, {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
